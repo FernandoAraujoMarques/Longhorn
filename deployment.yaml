@@ -1,8 +1,13 @@
 apiVersion: v1
+kind: Namespace
+metadata:
+  name: p-c24xc-pipeline
+---
+apiVersion: v1
 kind: ServiceAccount
 metadata:
   name: longhorn-service-account
-  
+  namespace: p-c24xc-pipeline
 ---
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRole
@@ -56,7 +61,7 @@ roleRef:
 subjects:
 - kind: ServiceAccount
   name: longhorn-service-account
-  
+  namespace: p-c24xc-pipeline
 ---
 apiVersion: apiextensions.k8s.io/v1beta1
 kind: CustomResourceDefinition
@@ -200,7 +205,7 @@ apiVersion: v1
 kind: ConfigMap
 metadata:
   name: longhorn-default-setting
-  
+  namespace: p-c24xc-pipeline
 data:
   default-setting.yaml: |-
     backup-target:
@@ -223,7 +228,7 @@ metadata:
   labels:
     app: longhorn-manager
   name: longhorn-manager
-  
+  namespace: p-c24xc-pipeline
 spec:
   selector:
     matchLabels:
@@ -311,7 +316,7 @@ metadata:
   labels:
     app: longhorn-manager
   name: longhorn-backend
-  
+  namespace: p-c24xc-pipeline
 spec:
   selector:
     app: longhorn-manager
@@ -326,7 +331,7 @@ metadata:
   labels:
     app: longhorn-ui
   name: longhorn-ui
-  
+  namespace: p-c24xc-pipeline
 spec:
   replicas: 1
   selector:
@@ -353,7 +358,7 @@ metadata:
   labels:
     app: longhorn-ui
   name: longhorn-frontend
-  
+  namespace: p-c24xc-pipeline
 spec:
   selector:
     app: longhorn-ui
@@ -367,7 +372,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: longhorn-driver-deployer
-  
+  namespace: p-c24xc-pipeline
 spec:
   replicas: 1
   selector:
@@ -425,7 +430,7 @@ metadata:
 provisioner: driver.longhorn.io
 allowVolumeExpansion: true
 parameters:
-  numberOfReplicas: "1"
+  numberOfReplicas: "3"
   staleReplicaTimeout: "2880"
   fromBackup: ""
 #  diskSelector: "ssd,fast"
@@ -439,7 +444,7 @@ parameters:
 kind: Ingress
 apiVersion: extensions/v1beta1
 metadata:
-  name: longhorn-ui
+  name: php-apache
   annotations:
     kubernetes.io/ingress.class: traefik
     traefik.ingress.kubernetes.io/router.tls: "true"
