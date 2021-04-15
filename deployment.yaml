@@ -1,13 +1,8 @@
 apiVersion: v1
-kind: Namespace
-metadata:
-  name: longhorn-system
----
-apiVersion: v1
 kind: ServiceAccount
 metadata:
   name: longhorn-service-account
-  namespace: longhorn-system
+  
 ---
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRole
@@ -61,7 +56,7 @@ roleRef:
 subjects:
 - kind: ServiceAccount
   name: longhorn-service-account
-  namespace: longhorn-system
+  
 ---
 apiVersion: apiextensions.k8s.io/v1beta1
 kind: CustomResourceDefinition
@@ -205,7 +200,7 @@ apiVersion: v1
 kind: ConfigMap
 metadata:
   name: longhorn-default-setting
-  namespace: longhorn-system
+  
 data:
   default-setting.yaml: |-
     backup-target:
@@ -228,7 +223,7 @@ metadata:
   labels:
     app: longhorn-manager
   name: longhorn-manager
-  namespace: longhorn-system
+  
 spec:
   selector:
     matchLabels:
@@ -316,7 +311,7 @@ metadata:
   labels:
     app: longhorn-manager
   name: longhorn-backend
-  namespace: longhorn-system
+  
 spec:
   selector:
     app: longhorn-manager
@@ -331,7 +326,7 @@ metadata:
   labels:
     app: longhorn-ui
   name: longhorn-ui
-  namespace: longhorn-system
+  
 spec:
   replicas: 1
   selector:
@@ -358,7 +353,7 @@ metadata:
   labels:
     app: longhorn-ui
   name: longhorn-frontend
-  namespace: longhorn-system
+  
 spec:
   selector:
     app: longhorn-ui
@@ -372,7 +367,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: longhorn-driver-deployer
-  namespace: longhorn-system
+  
 spec:
   replicas: 1
   selector:
